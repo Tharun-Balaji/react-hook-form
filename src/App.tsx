@@ -1,7 +1,8 @@
+import Users from "./Users/components/Users"
 
 
 function App() {
-  return <div>React-hook-form</div>
+  return <Users/>
 }
 
 export default App
