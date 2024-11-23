@@ -25,8 +25,22 @@ import { Option } from "../types/options";
  * The value of the component will be an array of option IDs.
  */
 type props<T extends FieldValues> = {
+  /**
+   * The name of the field in the form. This is used to register the field
+   * with the parent form context.
+   */
   name: Path<T>;
+
+  /**
+   * The options to be displayed in the autocomplete. Each option is an
+   * object with an id and a label. The id is the value of the option that
+   * will be submitted with the form.
+   */
   options?: Option[];
+
+  /**
+   * The label to be displayed on the text field.
+   */
   label: string;
 };
 
