@@ -26,7 +26,7 @@ import { Option } from "../types/options";
  */
 type props<T extends FieldValues> = {
   name: Path<T>;
-  options: Option[];
+  options?: Option[];
   label: string;
 };
 
@@ -61,7 +61,7 @@ export default function RHFAutocomplete<T extends FieldValues>({
         return (
           <Autocomplete
             multiple
-            options={options}
+            options={options ?? []}
             // isOptionEqualToValue is used to determine whether two options are equal.
             // It is used by the Autocomplete component to determine whether the currently
             // selected value is equal to the option that the user is hovering over.
@@ -70,39 +70,41 @@ export default function RHFAutocomplete<T extends FieldValues>({
             // It is used by the Autocomplete component to display the label of the option
             // in the dropdown list.
             getOptionLabel={(option) =>
-              options.find((item) => item.id === option.id)?.label ?? ""
+              options?.find((item) => item.id === option.id)?.label ?? ""
             }
             // value is the currently selected value of the Autocomplete component.
             // It is an array of objects, where each object has an "id" property.
             // We need to map this array of objects to an array of strings, where each
             // string is the id of the corresponding option.
             value={value.map((id: string) =>
-              options.find((item) => item.id === id)
+              options?.find((item) => item.id === id)
             )}
             // onChange is the function that is called when the user selects an option.
             // We need to map the selected option to its id, and then call the onChange
             // function that is passed to us by react-hook-form.
-            onChange={(_, newValue) => onChange(newValue.map((item) => item.id))}
+            onChange={(_, newValue) =>
+              onChange(newValue.map((item) => item.id))
+            }
             disableCloseOnSelect // Disable closing the dropdown when an option is selected
             renderInput={(params) => (
               <TextField
                 {...params}
                 fullWidth
-                inputRef={ref} 
+                inputRef={ref}
                 error={!!error}
                 helperText={error?.message}
                 label={label}
               />
             )}
             renderOption={(props, option, { selected }) => (
-              <Box component="li" {...props} >
-                <Checkbox
-                  icon={<CheckBoxOutlineBlank />}
-                  checkedIcon={<CheckBox />}
-                  checked={selected}
-                />
-                {option.label}
-              </Box>
+                <Box component="li" {...props}>
+                  <Checkbox
+                    icon={<CheckBoxOutlineBlank />}
+                    checkedIcon={<CheckBox />}
+                    checked={selected}
+                  />
+                  {option.label}
+                </Box>
             )}
           />
         );

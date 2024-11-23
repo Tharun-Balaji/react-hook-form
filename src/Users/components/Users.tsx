@@ -3,9 +3,13 @@ import {  useFormContext } from "react-hook-form";
 import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
 import { RHFAutocomplete } from "../../components";
+import { useStates } from "../services/queries";
 
 
 export default function Users() {
+
+  const statesQuery = useStates();
+
 
   const { register, formState: { errors } } = useFormContext<Schema>();
 
@@ -25,11 +29,7 @@ export default function Users() {
       />
       <RHFAutocomplete<Schema>
         name='states'
-        options={[
-          {id: "1", label: "Maharashtra"},
-          { id: "2", label: "Karnataka" },
-          { id: "3", label: "Tamil Nadu" },
-        ]}
+        options={statesQuery.data}
         label="States"
       />
     </Stack>
