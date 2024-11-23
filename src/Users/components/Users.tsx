@@ -1,14 +1,13 @@
 
-import { useForm } from "react-hook-form";
-import { schema, Schema } from "../../types/schema";
+import {  useFormContext } from "react-hook-form";
+import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
-import { zodResolver } from "@hookform/resolvers/zod";
+import { RHFAutocomplete } from "../../components";
+
 
 export default function Users() {
 
-  const { register, formState: { errors } } = useForm<Schema>({
-    resolver: zodResolver(schema),
-  });
+  const { register, formState: { errors } } = useFormContext<Schema>();
 
   return (
     <Stack sx={{gap:2}}>
@@ -23,6 +22,15 @@ export default function Users() {
         label="Email"
         error={!!errors.email}
         helperText={errors.email?.message}
+      />
+      <RHFAutocomplete<Schema>
+        name='states'
+        options={[
+          {id: "1", label: "Maharashtra"},
+          { id: "2", label: "Karnataka" },
+          { id: "3", label: "Tamil Nadu" },
+        ]}
+        label="States"
       />
     </Stack>
   )
