@@ -2,8 +2,8 @@
 import {  useFormContext } from "react-hook-form";
 import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
-import { RHFAutocomplete, RHFRadioGroup, RHFToggleButtonGroup } from "../../components";
-import { useGenders, useLanguages, useStates } from "../services/queries";
+import { RHFAutocomplete, RHFCheckbox, RHFRadioGroup, RHFToggleButtonGroup } from "../../components";
+import { useGenders, useLanguages, useSkills, useStates } from "../services/queries";
 
 
 /**
@@ -30,12 +30,13 @@ export default function Users() {
   const statesQuery = useStates();
   const languagesQuery = useLanguages();
   const gendersQuery = useGenders();
+  const skillsQuery = useSkills();
 
 
   const { register, formState: { errors } } = useFormContext<Schema>();
 
   return (
-    <Stack sx={{gap:2}}>
+    <Stack sx={{ gap: 2 }}>
       <TextField
         {...register("name")}
         label="Name"
@@ -49,20 +50,25 @@ export default function Users() {
         helperText={errors.email?.message}
       />
       <RHFAutocomplete<Schema>
-        name='states'
+        name="states"
         options={statesQuery.data}
         label="States"
       />
       <RHFToggleButtonGroup<Schema>
-        name='languagesSpoken'
+        name="languagesSpoken"
         options={languagesQuery.data}
       />
       <RHFRadioGroup<Schema>
-        name='gender'
+        name="gender"
         options={gendersQuery.data}
         label="Gender"
       />
+      <RHFCheckbox<Schema>
+        name="skills"
+        options={skillsQuery.data}
+        label="Skills"
+      />
     </Stack>
-  )
+  );
 }
 
