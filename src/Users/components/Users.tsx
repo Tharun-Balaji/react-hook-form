@@ -2,7 +2,7 @@
 import {  useFormContext } from "react-hook-form";
 import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
-import { RHFAutocomplete, RHFCheckbox, RHFRadioGroup, RHFToggleButtonGroup } from "../../components";
+import { RHFAutocomplete, RHFCheckbox, RHFDateTimePicker, RHFRadioGroup, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates } from "../services/queries";
 
 
@@ -67,6 +67,10 @@ export default function Users() {
         name="skills"
         options={skillsQuery.data}
         label="Skills"
+      />
+      <RHFDateTimePicker<Schema>
+        name="registrationDateAndTime"
+        label="Registration Date & Time"
       />
     </Stack>
   );
