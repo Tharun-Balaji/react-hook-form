@@ -1,9 +1,11 @@
 
-import {  useFieldArray, useFormContext } from "react-hook-form";
+import {  useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { Schema } from "../types/schema";
-import { Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates } from "../services/queries";
+import { Fragment } from "react";
+
 
 
 /**
@@ -35,7 +37,12 @@ export default function Users() {
 
   const { register, formState: { errors }, control } = useFormContext<Schema>();
 
-  const { append } = useFieldArray({
+  const isTeacher = useWatch({
+    control,
+    name: 'isTeacher'
+  })
+
+  const { append,fields, remove } = useFieldArray({
     control,
     name: 'students'
   });
@@ -80,6 +87,26 @@ export default function Users() {
       <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
       <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
       <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
+      {isTeacher && (
+        <Button onClick={() => append({ name: "" })} type="button">
+          Add new student
+        </Button>
+      )}
+
+      {fields.map((field, index) => (
+        <Fragment key={field.id}>
+          <TextField
+            {...register(`students.${index}.name`)}
+            fullWidth
+            label="Name"
+            key={field.id}
+          />
+          <Button color="error" onClick={() => remove(index)} type="button">
+            {" "}
+            Remove
+          </Button>
+        </Fragment>
+      ))}
     </Stack>
   );
 }
