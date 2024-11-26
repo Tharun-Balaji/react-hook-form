@@ -17,6 +17,7 @@ export const schema = z.object({
     .max(2, { message: "You can only select up to 2 skills" }),
   registrationDateAndTime: z.date(),
   formerEmploymentPeriod: z.array(z.date()).max(2),
+  salaryRange: z.array(z.number()).max(2),
 });
 
 export type Schema = z.infer<typeof schema>;
@@ -30,4 +31,5 @@ export const defaultValues: Schema = {
   skills: [],
   registrationDateAndTime: new Date(),
   formerEmploymentPeriod: [new Date(), new Date()],
+  salaryRange: [0, 2000],
 };
