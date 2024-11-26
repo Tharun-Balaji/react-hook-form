@@ -2,7 +2,7 @@
 import {  useFormContext } from "react-hook-form";
 import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
-import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFToggleButtonGroup } from "../../components";
+import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates } from "../services/queries";
 
 
@@ -74,6 +74,7 @@ export default function Users() {
       />
       <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
       <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
+      <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
     </Stack>
   );
 }

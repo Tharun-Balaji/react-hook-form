@@ -6,6 +6,7 @@ import RHFCheckbox from "./RHFCheckbox";
 import RHFDateTimePicker from "./RHFDateTimePicker";
 import RHFDateRangePicker from "./RHFDateRangePicker";
 import RHFSlider from "./RHFSlider";
+import RHFSwitch from './RHFSwitch'
 
 export {
   RHFAutocomplete,
@@ -14,5 +15,6 @@ export {
   RHFCheckbox,
   RHFDateTimePicker,
   RHFDateRangePicker,
-  RHFSlider
+  RHFSlider,
+  RHFSwitch
 }
