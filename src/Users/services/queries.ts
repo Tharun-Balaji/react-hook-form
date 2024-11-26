@@ -9,6 +9,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Option } from '../../types/options';
+import { ApiGet } from '../types/apiTypes';
 
 /**
  * The base URL of the REST API.
@@ -21,7 +22,7 @@ const url : string = 'http://localhost:8080';
  * @returns A react-query hook that fetches the list of states
  * from the API and caches the result.
  */
-export function useStates() { 
+ function useStates() { 
   return useQuery({
     // The query key is used to identify the query in the cache.
     // It is used to determine whether the query has already been
@@ -39,7 +40,7 @@ export function useStates() {
  * @returns A react-query hook that fetches the list of languages
  * from the API and caches the result.
  */
-export function useLanguages() {
+ function useLanguages() {
 	return useQuery({
 		// The query key is used to identify the query in the cache.
 		// It is used to determine whether the query has already been
@@ -59,7 +60,7 @@ export function useLanguages() {
  * @returns A react-query hook that fetches the list of genders
  * from the API and caches the result.
  */
-export function useGenders() {
+ function useGenders() {
 	return useQuery({
 		// The query key is used to identify the query in the cache.
 		// It is used to determine whether the query has already been
@@ -79,7 +80,7 @@ export function useGenders() {
  * @returns A react-query hook that fetches the list of skills
  * from the API and caches the result.
  */
-export function useSkills() {
+ function useSkills() {
 	return useQuery({
 		// The query key is used to identify the query in the cache.
 		// It is used to determine whether the query has already been
@@ -92,4 +93,42 @@ export function useSkills() {
 				.get<Option[]>(url.concat("/skills"))
 				.then((res) => res.data),
 	});
+}
+
+
+/**
+ * A function for querying the list of users from the API.
+ * @returns A react-query hook that fetches the list of users.
+ * Each user is represented as an Option object with an "id" and "label".
+ * The "id" is the user's identifier and "label" is the user's name.
+ * The array of users is sorted alphabetically by the "label" property.
+ */
+function useUsers() {
+  return useQuery({
+    queryKey: ["users"],
+		/**
+		 * The query function is the function that fetches the data
+		 * from the API. It is called when the query is executed.
+		 * @returns A promise that resolves to an array of options,
+		 * where each option has an "id" property and a "label" property.
+		 * The "id" property is the id of the user, and the "label" property
+		 * is the name of the user. The array is sorted alphabetically by
+		 * the "label" property.
+		 */
+		queryFn: (): Promise<Option[]> => axios.get<ApiGet[]>(url.concat("/users"))
+			.then((response) =>
+        response.data.map((user) => ({
+          id: user.id.toString(),
+          label: user.name,
+        } satisfies Option))
+      ),
+  });
+}
+
+export {
+	useStates,
+	useLanguages,
+	useGenders,
+	useSkills,
+	useUsers
 }
