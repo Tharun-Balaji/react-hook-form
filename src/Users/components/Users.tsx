@@ -1,10 +1,11 @@
 
-import {  useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import {  SubmitHandler, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { defaultValues, Schema } from "../types/schema";
 import { Button, Container, List, ListItem, ListItemButton, ListItemText, ListSubheader, Stack, TextField } from '@mui/material';
 import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates, useUser, useUsers } from "../services/queries";
 import { Fragment, useEffect } from "react";
+import { useCreateUser } from "../services/mutations";
 
 
 
@@ -35,6 +36,8 @@ export default function Users() {
   const skillsQuery = useSkills();
   const usersQuery = useUsers();
 
+  const createUserMutation = useCreateUser()
+
   const {
     register,
     formState: { errors },
@@ -42,6 +45,7 @@ export default function Users() {
     reset,
     setValue,
     unregister,
+    handleSubmit
   } = useFormContext<Schema>();
 
   const { append, fields, remove, replace } = useFieldArray({
@@ -93,8 +97,16 @@ export default function Users() {
     setValue("id", id);
   };
 
+  const onSubmit: SubmitHandler<Schema> = (data) => {
+    if (variant === "create") {
+      createUserMutation.mutate(data);
+    } else {
+      // Update the user
+    }
+  };
+
   return (
-    <Container maxWidth="sm" component="form">
+    <Container maxWidth="sm" component="form" onSubmit={handleSubmit(onSubmit)} >
       <Stack sx={{ flexDirection: "row", gap: 2 }}>
         <List subheader={<ListSubheader>Users</ListSubheader>}>
           {usersQuery.data?.map((user) => (
