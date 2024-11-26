@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Option } from '../../types/options';
 import { ApiGet } from '../types/apiTypes';
+import { Schema } from "../types/schema";
 
 /**
  * The base URL of the REST API.
@@ -125,10 +126,66 @@ function useUsers() {
   });
 }
 
+
+/**
+ * A function for querying a specific user from the API by their ID.
+ * 
+ * This function utilizes the `useQuery` hook from `@tanstack/react-query`
+ * to fetch and cache the data of a single user identified by the provided ID.
+ * 
+ * The data fetched includes the user's name, email, employment period, gender,
+ * spoken languages, registration date and time, salary range, skills, states,
+ * students, and whether the user is a teacher.
+ * 
+ * The result conforms to the `Schema` type, ensuring all fields are correctly
+ * formatted and present. It returns a promise that resolves to an object
+ * containing these fields.
+ * 
+ * @param {string} id - The unique identifier of the user to be fetched.
+ * @returns {object} An object representing the user's data, adhering to the `Schema` type.
+ */
+function useUser(id: string) {
+
+  return useQuery({
+    // The query key is used to identify the query in the cache.
+    // It is used to determine whether the query has already been
+    // executed and whether the result is cached.
+    queryKey: ["user", { id }],
+    // The query function is the function that fetches the data
+    // from the API. It is called when the query is executed.
+    queryFn: async (): Promise<Schema> => {
+      const res = await axios
+        .get<ApiGet>(url.concat(`/users/${id}`))
+        .then((res) => res.data)
+
+      return {
+        variant: "edit",
+        id: res.id.toString(),
+        name: res.name,
+        email: res.email,
+        formerEmploymentPeriod: [
+          new Date(res.formerEmploymentPeriod[0]),
+          new Date(res.formerEmploymentPeriod[1]),
+        ],
+        gender: res.gender,
+        languagesSpoken: res.languagesSpoken,
+        registrationDateAndTime: new Date(res.registrationDateAndTime),
+        salaryRange: [res.salaryRange[0], res.salaryRange[1]],
+        skills: res.skills,
+        states: res.states,
+        students: res.students,
+        isTeacher: res.isTeacher,
+      };
+		},
+		enabled: !!id,
+  });
+}
+
 export {
 	useStates,
 	useLanguages,
 	useGenders,
 	useSkills,
-	useUsers
+	useUsers,
+	useUser
 }
