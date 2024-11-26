@@ -1,5 +1,5 @@
 
-import {  useFormContext } from "react-hook-form";
+import {  useFieldArray, useFormContext } from "react-hook-form";
 import { Schema } from "../types/schema";
 import { Stack, TextField } from '@mui/material';
 import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
@@ -33,7 +33,12 @@ export default function Users() {
   const skillsQuery = useSkills();
 
 
-  const { register, formState: { errors } } = useFormContext<Schema>();
+  const { register, formState: { errors }, control } = useFormContext<Schema>();
+
+  const { append } = useFieldArray({
+    control,
+    name: 'students'
+  });
 
   return (
     <Stack sx={{ gap: 2 }}>
