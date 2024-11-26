@@ -1,7 +1,7 @@
 
 import {  useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { Schema } from "../types/schema";
-import { Button, Stack, TextField } from '@mui/material';
+import { defaultValues, Schema } from "../types/schema";
+import { Button, Container, Stack, TextField } from '@mui/material';
 import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates } from "../services/queries";
 import { Fragment } from "react";
@@ -35,7 +35,11 @@ export default function Users() {
   const skillsQuery = useSkills();
 
 
-  const { register, formState: { errors }, control } = useFormContext<Schema>();
+  const { register,
+    formState: { errors },
+    control,
+    reset,
+  } = useFormContext<Schema>();
 
   const isTeacher = useWatch({
     control,
@@ -47,67 +51,79 @@ export default function Users() {
     name: 'students'
   });
 
+  /**
+   * Resets the form to the default values.
+   */
+    const handleReset = () => {
+      reset(defaultValues);
+    };
   return (
-    <Stack sx={{ gap: 2 }}>
-      <TextField
-        {...register("name")}
-        label="Name"
-        error={!!errors.name}
-        helperText={errors.name?.message}
-      />
-      <TextField
-        {...register("email")}
-        label="Email"
-        error={!!errors.email}
-        helperText={errors.email?.message}
-      />
-      <RHFAutocomplete<Schema>
-        name="states"
-        options={statesQuery.data}
-        label="States"
-      />
-      <RHFToggleButtonGroup<Schema>
-        name="languagesSpoken"
-        options={languagesQuery.data}
-      />
-      <RHFRadioGroup<Schema>
-        name="gender"
-        options={gendersQuery.data}
-        label="Gender"
-      />
-      <RHFCheckbox<Schema>
-        name="skills"
-        options={skillsQuery.data}
-        label="Skills"
-      />
-      <RHFDateTimePicker<Schema>
-        name="registrationDateAndTime"
-        label="Registration Date & Time"
-      />
-      <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
-      <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
-      <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
-      {isTeacher && (
-        <Button onClick={() => append({ name: "" })} type="button">
-          Add new student
-        </Button>
-      )}
-
-      {fields.map((field, index) => (
-        <Fragment key={field.id}>
-          <TextField
-            {...register(`students.${index}.name`)}
-            fullWidth
-            label="Name"
-            key={field.id}
-          />
-          <Button color="error" onClick={() => remove(index)} type="button">
-            {" "}
-            Remove
+    <Container maxWidth="sm" component='form' >
+      <Stack sx={{ gap: 2 }}>
+        <TextField
+          {...register("name")}
+          label="Name"
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+        <TextField
+          {...register("email")}
+          label="Email"
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+        <RHFAutocomplete<Schema>
+          name="states"
+          options={statesQuery.data}
+          label="States"
+        />
+        <RHFToggleButtonGroup<Schema>
+          name="languagesSpoken"
+          options={languagesQuery.data}
+        />
+        <RHFRadioGroup<Schema>
+          name="gender"
+          options={gendersQuery.data}
+          label="Gender"
+        />
+        <RHFCheckbox<Schema>
+          name="skills"
+          options={skillsQuery.data}
+          label="Skills"
+        />
+        <RHFDateTimePicker<Schema>
+          name="registrationDateAndTime"
+          label="Registration Date & Time"
+        />
+        <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
+        <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
+        <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
+        {isTeacher && (
+          <Button onClick={() => append({ name: "" })} type="button">
+            Add new student
           </Button>
-        </Fragment>
-      ))}
-    </Stack>
+        )}
+
+        {fields.map((field, index) => (
+          <Fragment key={field.id}>
+            <TextField
+              {...register(`students.${index}.name`)}
+              fullWidth
+              label="Name"
+              key={field.id}
+            />
+            <Button color="error" onClick={() => remove(index)} type="button">
+              {" "}
+              Remove
+            </Button>
+          </Fragment>
+        ))}
+        <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Button type="submit" >{'New User'}</Button>
+          <Button onClick={handleReset} >{'Reset'}</Button>
+         </Stack>
+      </Stack>
+    </Container>
   );
 }
 
