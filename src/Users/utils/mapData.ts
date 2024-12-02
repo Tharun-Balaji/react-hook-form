@@ -39,7 +39,7 @@ function mapData(data: Schema): ApiCreateEdit {
       return { ...common, variant: data.variant };
     }
     case "edit": {
-      return { ...common, id: data.id, variant: data.variant };
+      return { ...common, id: Number(data.id), variant: data.variant };
     }
   }
 }

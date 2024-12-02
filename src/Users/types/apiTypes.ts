@@ -12,7 +12,7 @@ type Create = {
 
 type Edit = {
   variant: "edit";
-  id: string; 
+  id: number; 
 }
 
 /**
@@ -21,7 +21,7 @@ type Edit = {
  * The Common type contains the properties that are shared between the create and edit endpoints.
  * These properties are the ones that are required for both the create and edit endpoints.
  */
-type Common = {
+export type Common = {
   email: string;
   name: string;
   states: string[];
