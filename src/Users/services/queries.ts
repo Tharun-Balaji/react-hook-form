@@ -11,12 +11,8 @@ import axios from 'axios';
 import { Option } from '../../types/options';
 import { ApiGet } from '../types/apiTypes';
 import { Schema } from "../types/schema";
+import { url } from '../../constants';
 
-/**
- * The base URL of the REST API.
- * This is used to construct the full URL of each query.
- */
-const url : string = 'http://localhost:8080';
 
 /**
  * A function for querying the list of states from the API.

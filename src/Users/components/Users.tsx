@@ -5,7 +5,7 @@ import { Button, Container, List, ListItem, ListItemButton, ListItemText, ListSu
 import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates, useUser, useUsers } from "../services/queries";
 import { Fragment, useEffect } from "react";
-import { useCreateUser } from "../services/mutations";
+import { useCreateUser, useEditUser } from "../services/mutations";
 
 
 
@@ -36,7 +36,8 @@ export default function Users() {
   const skillsQuery = useSkills();
   const usersQuery = useUsers();
 
-  const createUserMutation = useCreateUser()
+  const createUserMutation = useCreateUser();
+  const editUserMutation = useEditUser();
 
   const {
     register,
@@ -101,12 +102,12 @@ export default function Users() {
     if (variant === "create") {
       createUserMutation.mutate(data);
     } else {
-      // Update the user
+      editUserMutation.mutate(data);
     }
   };
 
   return (
-    <Container maxWidth="sm" component="form" onSubmit={handleSubmit(onSubmit)} >
+    <Container maxWidth="sm" component="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack sx={{ flexDirection: "row", gap: 2 }}>
         <List subheader={<ListSubheader>Users</ListSubheader>}>
           {usersQuery.data?.map((user) => (
@@ -185,7 +186,10 @@ export default function Users() {
             </Fragment>
           ))}
           <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Button type="submit">{"New User"}</Button>
+            <Button type="submit">
+              {" "}
+              {variant === "create" ? "New User" : "Edit User"}
+            </Button>
             <Button onClick={handleReset}>{"Reset"}</Button>
           </Stack>
         </Stack>
