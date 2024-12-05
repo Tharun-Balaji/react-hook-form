@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Schema } from "../types/schema";
 import axios from "axios";
 import { omit } from "lodash";
@@ -22,6 +22,9 @@ import { url } from "../../constants";
  * @returns A mutation object that contains methods and state related to the mutation.
  */
 function useCreateUser() {
+  // Get the QueryClient instance using the hook
+  const queryClient = useQueryClient();
+
   return useMutation({
     /**
      * Posts the given data to the /users endpoint.
@@ -37,7 +40,7 @@ function useCreateUser() {
      * and alert the user that the user was created successfully.
      */
     onSuccess: async () => {
-      await QueryClient.invalidateQueries({ queryKey: ["users"] });
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       alert("User created successfully!");
     },
   });
@@ -82,7 +85,7 @@ function useEditUser() {
     mutationFn: async (data: Schema) => {
       if (data.variant === "edit") {
         await axios.put(
-          `http://localhost:8080/users/${data.id}`,
+          `${url}/users/${data.id}`,
           omit(mapData(data), "variant")
         );
         alert("User edited successfully!");

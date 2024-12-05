@@ -2,7 +2,7 @@
 import {  SubmitHandler, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { defaultValues, Schema } from "../types/schema";
 import { Button, Container, List, ListItem, ListItemButton, ListItemText, ListSubheader, Stack, TextField } from '@mui/material';
-import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
+import { RHFAutocomplete, RHFCheckbox, RHFDateRangePicker, RHFDateTimePicker, RHFRadioGroup, RHFReactDateRangePicker, RHFSlider, RHFSwitch, RHFToggleButtonGroup } from "../../components";
 import { useGenders, useLanguages, useSkills, useStates, useUser, useUsers } from "../services/queries";
 import { Fragment, useEffect } from "react";
 import { useCreateUser, useEditUser } from "../services/mutations";
@@ -162,7 +162,8 @@ export default function Users() {
             name="registrationDateAndTime"
             label="Registration Date & Time"
           />
-          <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
+          <RHFReactDateRangePicker<Schema> name="formerEmploymentPeriod" />
+          {/* <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" /> */}
           <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
           <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
           {isTeacher && (
