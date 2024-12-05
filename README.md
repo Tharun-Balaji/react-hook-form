@@ -27,6 +27,117 @@ This project demonstrates an advanced form handling solution using React Hook Fo
 - Material-UI
 - Vite (assumed build tool)
 
+## 🧑‍💻 Code Snippets
+
+### 1. Zod Schema Validation
+
+```typescript
+import { z } from "zod";
+
+export const schema = z
+  .intersection(
+    z.object({
+      // Robust validation rules
+      name: z.string().min(1, { message: "Name is required" }),
+      email: z
+        .string()
+        .min(1, { message: "Email is required" })
+        .refine((email) => patterns.email.test(email), {
+          message: "Invalid email address",
+        }),
+      states: z.array(z.string()).min(1).max(2),
+      skills: z
+        .array(z.string())
+        .max(2, { message: "You can only select up to 2 skills" }),
+      registrationDateAndTime: z.date(),
+      isTeacher: z.boolean(),
+    }),
+    // Discriminated union for form variants
+    z.discriminatedUnion("variant", [
+      z.object({ variant: z.literal("create") }),
+      z.object({
+        variant: z.literal("edit"),
+        id: z.string().min(1),
+      }),
+    ])
+  )
+  .and(
+    // Conditional validation for teacher-specific fields
+    z.union([
+      z.object({ isTeacher: z.literal(false) }),
+      z.object({
+        isTeacher: z.literal(true),
+        students: z.array(
+          z.object({
+            name: z.string().min(4),
+          })
+        ),
+      })
+    ])
+  );
+```
+
+### 2. Data Mapping Utility
+
+```typescript
+function mapData(data: Schema): ApiCreateEdit {
+  const common: Common = {
+    email: data.email,
+    name: data.name,
+    states: data.states,
+    // ... other common fields
+  };
+
+  switch (data.variant) {
+    case "create": {
+      return { ...common, variant: data.variant };
+    }
+    case "edit": {
+      return { ...common, id: Number(data.id), variant: data.variant };
+    }
+  }
+}
+```
+
+### 3. Custom Form Component Example
+
+```typescript
+// RHFAutocomplete.tsx
+import { Controller, useFormContext } from "react-hook-form";
+import { Autocomplete, TextField } from "@mui/material";
+
+export function RHFAutocomplete({ 
+  name, 
+  label, 
+  options, 
+  ...other 
+}) {
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <Autocomplete
+          {...field}
+          options={options}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={label}
+              error={!!error}
+              helperText={error?.message}
+            />
+          )}
+          {...other}
+        />
+      )}
+    />
+  );
+}
+```
+
 ## 📂 Project Structure
 
 ```
