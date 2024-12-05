@@ -1,50 +1,112 @@
-# React + TypeScript + Vite
+# React Hook Form with Zod, TypeScript, and Material-UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project demonstrates an advanced form handling solution using React Hook Form, Zod for schema validation, TypeScript for type safety, and Material-UI for components. It provides a robust and type-safe form management experience with comprehensive validation and customization.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **Efficient Form Handling**: Leverages React Hook Form's powerful API for seamless form state management
+- **Material-UI Integration**: Fully compatible with Material-UI components
+- **Zod Schema Validation**: Robust data validation with complex schema definitions
+- **TypeScript Support**: Enhanced type safety and code readability
+- **Custom Validation**: Flexible validation logic with Zod
+- **Dynamic Form Variants**: Support for create and edit form modes
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 📦 Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+- Node.js (v14 or later)
+- npm or Yarn
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🛠️ Technologies Used
+
+- React
+- React Hook Form
+- Zod
+- TypeScript
+- Material-UI
+- Vite (assumed build tool)
+
+## 📂 Project Structure
+
+```
+src/
+├── components/          # Reusable form components
+│   ├── RHFDateRangePicker.tsx
+│   ├── RHFAutocomplete.tsx
+│   └── ...
+├── services/            # API-related services
+│   ├── mutations.ts
+│   └── queries.ts
+├── types/               # TypeScript type definitions
+│   ├── apiTypes.ts
+│   └── schema.ts
+├── utils/               # Utility functions
+│   ├── mapData.ts
+│   └── constants.ts
+├── App.tsx
+└── main.tsx
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🔧 Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd <project-directory>
 ```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+## 📝 Key Validation Features
+
+### Form Schema Validation
+- Name: Required, minimum length
+- Email: Required, regex pattern validation
+- States: 1-2 selections allowed
+- Skills: Maximum 2 selections
+- Dynamic validation based on form mode (create/edit)
+- Conditional validation for teacher-specific fields
+
+## 🧪 Testing the Form
+
+The demo is available at: https://reat-hook-form.netlify.app/
+
+## 💡 Key Components
+
+- `RHFDateRangePicker`: Date range selection
+- `RHFAutocomplete`: Autocomplete input
+- `RHFSwitch`: Toggle switch
+- And more custom form components
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License.
+
+## 🔗 Original Repository
+
+[GitHub Repository](https://github.com/Tharun-Balaji/react-hook-form)
+
+## 👨‍💻 Author
+
+Tharun Balaji
